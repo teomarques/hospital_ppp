@@ -17,5 +17,6 @@ typedef struct list_doente{
 
 }list_doente_t;
 
+void print_oi();
 
 #endif
