@@ -62,11 +62,27 @@ void clear_doente(list_doente_t *list_doente){
         list_doente -> front_doente = list_doente -> front_doente -> next;
         free(node);
     }
-    init(list_doente);
+    init_doente(list_doente);
 }
 
-// PERCORRE TODOS OS NODES DA LISTA DOENTE E ORDENA POR ORDEM ALFABÉTICA
-void search_doente(list_doente_t *list_doente, char nome, node_doente_t **prev, node_doente_t **cur){
+/* PERCORRE TODOS OS NODES DA LISTA DOENTE E ORDENA POR ORDEM ALFABÉTICA
+void sort_doente(list_doente_t *list_doente, char *nome, node_doente_t **prev, node_doente_t **cur){
+    *prev = NULL;
+    *cur = list_doente -> front_doente;
+    //while(*cur != NULL && strcmp((*cur) -> nome, nome) < 0){
+    while(*cur != NULL){
+        if(strcmp((*cur) -> nome, nome) < 0){
+            *prev = *cur;
+            *cur = (*cur) -> next;
+        }else{
+            *prev = (*cur) -> next;
+            *cur = (*cur) -> next -> next;
+        }
+    }
+}*/
+
+// PESQUISA UM DOENTE POR ID E ORDENA POR NOME
+void search_doente(list_doente_t *list_doente, int *id, char *nome[TAMANHO], node_doente_t **prev, node_doente_t **cur){
     *prev = NULL;
     *cur = list_doente -> front_doente;
     //while(*cur != NULL && strcmp((*cur) -> nome, nome) < 0){
@@ -91,7 +107,7 @@ void insert_doente(list_doente_t *list_doente, int id, int tel, int dia_nascimen
         node -> dia_nascimento = dia_nascimento;
         node -> mes_nascimento = mes_nascimento;
         node -> ano_nascimento = ano_nascimento;
-        search(list_doente, nome, &prev, &cur);
+        search_doente(list_doente, nome, &prev, &cur);
         if(prev != NULL){
             prev -> next = node;
             node -> next = cur;
@@ -109,11 +125,19 @@ void insert_doente(list_doente_t *list_doente, int id, int tel, int dia_nascimen
 
 void remove_node_doente(list_doente_t *list_doente, int id){
     node_doente_t *prev, *cur;
-    search(list_doente, id, &prev, &cur);
+    search_doente(list_doente, &id, &prev, &cur);
     if(cur != NULL && cur -> id == id){
         if(prev != NULL) prev -> next = cur -> next;
         else list_doente -> front_doente = cur -> next;
         free(cur);
         list_doente -> num_elems --;
     }
+}
+
+int main(){
+    int opcao;
+    printf("-----TABELA DE AÇÕES-----\n\n");
+    printf("1 - INTRODUZIR DADOS DE UM NOVO CLIENTE\n2 - ELIMINAR UM DOENTE EXISTENTE\n3 - LISTAR TODOS OS DOENTES POR ORDEM ALFABÉTICA\n4 - LISTAR OS DOENTES COM TENSÕES MÁXIMAS ACIMA DE UM VALOR\n5 - APRESENTAR TODA A INFORMAÇÃO DE UM DETERMINADO DOENTE\n6 - REGISTRAR AS TENSÕES, O PESO E A ALTURA DE UM DETERMINADO DOENTE NUM DETERMINADO DIA\n");
+    fgets(opcao, 1, stdin);
+    printf("%d", opcao);
 }
