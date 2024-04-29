@@ -3,18 +3,21 @@
 
 #define TAMANHO 40
 
-typedef struct inf_doente{
-    int id, tel;
-    char nome[TAMANHO], data_nascimento[TAMANHO], cc[TAMANHO], email[TAMANHO];
-}inf_doente_t;
+typedef struct node_doente{
+    int id, tel, dia_nascimento, mes_nascimento, ano_nascimento;
+    char nome[TAMANHO], cc[TAMANHO], email[TAMANHO];
+    struct node_doente *next;
+}node_doente_t;
 
-typedef struct inf_registro{
-    int id, tmax, tmin, peso, altura;
-    char data_registro[TAMANHO];
-}inf_registros_t;
+typedef struct node_registro{
+    int tmax, tmin, peso, altura, dia_registro, mes_registro, ano_registro;
+    struct node_registro *next;
+}node_registro_t;
 
 typedef struct list_doente{
-
+    size_t num_elems;
+    node_doente_t *front_doente;
+    node_registro_t *front_registro;
 }list_doente_t;
 
 #endif
