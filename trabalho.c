@@ -65,7 +65,7 @@ void clear_doente(list_doente_t *list_doente){
     init_doente(list_doente);
 }
 
-/* PERCORRE TODOS OS NODES DA LISTA DOENTE E ORDENA POR ORDEM ALFABÉTICA
+// PERCORRE TODOS OS NODES DA LISTA DOENTE E ORDENA POR ORDEM ALFABÉTICA
 void sort_doente(list_doente_t *list_doente, char *nome, node_doente_t **prev, node_doente_t **cur){
     *prev = NULL;
     *cur = list_doente -> front_doente;
@@ -79,17 +79,15 @@ void sort_doente(list_doente_t *list_doente, char *nome, node_doente_t **prev, n
             *cur = (*cur) -> next -> next;
         }
     }
-}*/
+}
 
 // PESQUISA UM DOENTE POR ID E ORDENA POR NOME
-void search_doente(list_doente_t *list_doente, int *id, char *nome[TAMANHO], node_doente_t **prev, node_doente_t **cur){
+void search_doente(list_doente_t *list_doente, int *id, node_doente_t **prev, node_doente_t **cur){
     *prev = NULL;
     *cur = list_doente -> front_doente;
-    //while(*cur != NULL && strcmp((*cur) -> nome, nome) < 0){
     while(*cur != NULL){
-        if(strcmp((*cur) -> nome, *nome) < 0){
-            *prev = *cur;
-            *cur = (*cur) -> next;
+        if((*cur) -> id == id){
+            
         }else{
             *prev = (*cur) -> next;
             *cur = (*cur) -> next -> next;
@@ -98,16 +96,17 @@ void search_doente(list_doente_t *list_doente, int *id, char *nome[TAMANHO], nod
 }
 
 // INSERIR ELEMENTO NO TOPO DA LISTA
-void insert_doente(list_doente_t *list_doente, int *id, int *tel, int *dia_nascimento, int *mes_nascimento, int *ano_nascimento, char *nome[TAMANHO], char *cc[TAMANHO], char *email[TAMANHO]){
+void insert_doente(list_doente_t *list_doente, int *id, int *tel, int *dia_nascimento, int *mes_nascimento, int *ano_nascimento, char nome[TAMANHO], char cc[TAMANHO], char email[TAMANHO]){
     node_doente_t *node = (node_doente_t*)malloc(sizeof(node_doente_t));
     node_doente_t *prev, *cur;
     if(node != NULL){
-        node -> id = id;
-        node -> tel = tel;
-        node -> dia_nascimento = dia_nascimento;
-        node -> mes_nascimento = mes_nascimento;
-        node -> ano_nascimento = ano_nascimento;
-        search_doente(list_doente, &nome, &prev, &cur);
+        node -> id = *id;
+        node -> tel = *tel;
+        node -> dia_nascimento = *dia_nascimento;
+        node -> mes_nascimento = *mes_nascimento;
+        node -> ano_nascimento = *ano_nascimento;
+        for(size_t i = 0; i < sizeof(*nome); i++) node -> nome[i] = nome[i];
+        search_doente(list_doente, id, &prev, &cur);
         if(prev != NULL){
             prev -> next = node;
             node -> next = cur;
@@ -135,9 +134,9 @@ void remove_node_doente(list_doente_t *list_doente, int id){
 }
 
 int main(){
-    int opcao;
+    int opcao = 0;
     printf("-----TABELA DE AÇÕES-----\n\n");
     printf("1 - INTRODUZIR DADOS DE UM NOVO CLIENTE\n2 - ELIMINAR UM DOENTE EXISTENTE\n3 - LISTAR TODOS OS DOENTES POR ORDEM ALFABÉTICA\n4 - LISTAR OS DOENTES COM TENSÕES MÁXIMAS ACIMA DE UM VALOR\n5 - APRESENTAR TODA A INFORMAÇÃO DE UM DETERMINADO DOENTE\n6 - REGISTRAR AS TENSÕES, O PESO E A ALTURA DE UM DETERMINADO DOENTE NUM DETERMINADO DIA\n");
-    fgets(opcao, 1, stdin);
+    scanf("%d" &opcao);
     printf("%d", opcao);
 }
