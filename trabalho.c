@@ -40,6 +40,18 @@ void init_doente(list_doente_t *list_doente){
     list_doente -> front_doente = NULL;
 }
 
+int verifica_numeros(const char *input){ // implementar depois no loop, very raw
+    for(int i = 0; input[i] != '\0'; i++){
+        if(input[i] < '0' || input[i] > '9') return 0; // não é um número
+    } return 1; // é um número
+}
+
+void limpar_buffer(char *input){
+    int c;
+    if(input[strlen(input) -1] == '\n') input[strlen(input) -1] = '\0';
+    else{while((c = getchar()) != '\n' && c != EOF);}
+}
+
 // ANULA O NODO ATUAL DA LISTA DOENTE
 int empty_doente(list_doente_t *list_doente){
     return list_doente -> front_doente == NULL;
@@ -49,7 +61,7 @@ int empty_doente(list_doente_t *list_doente){
 void print_list_doente(list_doente_t *list_doente){
     node_doente_t *node = list_doente -> front_doente;
     while(node != NULL){
-        printf("qualquer coisa");
+        printf("funcionou");
         node = node -> next;
     }
 }
@@ -86,7 +98,7 @@ void search_doente(list_doente_t *list_doente, int *id, node_doente_t **prev, no
     *prev = NULL;
     *cur = list_doente -> front_doente;
     while(*cur != NULL){
-        if((*cur) -> id == id){
+        if((*cur) -> id == *id){
             
         }else{
             *prev = (*cur) -> next;
@@ -134,9 +146,15 @@ void remove_node_doente(list_doente_t *list_doente, int id){
 }
 
 int main(){
-    int opcao = 0;
+    char opcao[5];
     printf("-----TABELA DE AÇÕES-----\n\n");
     printf("1 - INTRODUZIR DADOS DE UM NOVO CLIENTE\n2 - ELIMINAR UM DOENTE EXISTENTE\n3 - LISTAR TODOS OS DOENTES POR ORDEM ALFABÉTICA\n4 - LISTAR OS DOENTES COM TENSÕES MÁXIMAS ACIMA DE UM VALOR\n5 - APRESENTAR TODA A INFORMAÇÃO DE UM DETERMINADO DOENTE\n6 - REGISTRAR AS TENSÕES, O PESO E A ALTURA DE UM DETERMINADO DOENTE NUM DETERMINADO DIA\n");
-    scanf("%d" &opcao);
-    printf("%d", opcao);
+    do{
+        fgets(opcao, 5, stdin);
+        limpar_buffer(opcao);
+        if(verifica_numeros(opcao)) break;
+        printf("Apenas números são permitidos!\n");
+    }while(!verifica_numeros(opcao));
+    int opcao_num = (int)opcao[0] - '0';
+    printf("%d", opcao_num);
 }
