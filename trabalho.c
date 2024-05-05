@@ -164,6 +164,8 @@ void remove_node_doente(list_doente_t *list_doente, int id){
 }
 // --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
+// INTRODUZIR INFOS DOENTES -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
 // FUNÇÃO PRINCIPAL ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 int main(){
     char opcao[5];
@@ -196,12 +198,15 @@ int main(){
                 limpar_buffer(tel);
                 if(verifica_numeros(tel)){
                     int tel_num = (int)tel[0] - '0';
-                    printf("Introduza a data de nascimento do doente: ");
+                    printf("Introduza a data de nascimento do doente por: \n");
+                    printf("DIA: ");
                     char dia_nascimento[3], mes_nascimento[3], ano_nascimento[5];
                     fgets(dia_nascimento, 3, stdin);
                     limpar_buffer(dia_nascimento);
+                    printf("MÊS: ");
                     fgets(mes_nascimento, 3, stdin);
                     limpar_buffer(mes_nascimento);
+                    printf("ANO: ");
                     fgets(ano_nascimento, 5, stdin);
                     limpar_buffer(ano_nascimento);
                     if(verifica_numeros(dia_nascimento) && verifica_numeros(mes_nascimento) && verifica_numeros(ano_nascimento)){
@@ -219,6 +224,7 @@ int main(){
                         insert_doente(list_doente, &id_num, &tel_num, &dia_nascimento_num, &mes_nascimento_num, &ano_nascimento_num, nome, cc, email);
                     }else printf("Apenas números são permitidos!\n");
                 }else printf("Apenas números são permitidos!\n");
+                break;
                 case 2:
                     printf("Introduza o ID do doente que deseja remover: ");
                     char id_remove[5];
@@ -227,7 +233,10 @@ int main(){
                     if(verifica_numeros(id_remove)){
                         int id_remove_num = (int)id_remove[0] - '0';
                         remove_node_doente(list_doente, id_remove_num);
-                    }else printf("Apenas números são permitidos!\n");
+                    }else {
+                        printf("Apenas números são permitidos!\n");
+                    break;
+                    }
             }
     }
 }
