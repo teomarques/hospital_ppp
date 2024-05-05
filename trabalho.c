@@ -34,30 +34,36 @@ mas sem parar o projeto
 #include <string.h>
 #include "trab_estruturas.h"
 
-// INICIALIZA A LISTA DOENTE
+// INICIALIZA A LISTA DOENTE ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 void init_doente(list_doente_t *list_doente){
     list_doente -> num_elems = 0;
     list_doente -> front_doente = NULL;
 }
+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
+// VERIFICA SE O INPUT É UM NÚMERO ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 int verifica_numeros(const char *input){ // implementar depois no loop, very raw
     for(int i = 0; input[i] != '\0'; i++){
         if(input[i] < '0' || input[i] > '9') return 0; // não é um número
     } return 1; // é um número
 }
+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
+// LIMPA O BUFFER DO INPUT --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 void limpar_buffer(char *input){
     int c;
     if(input[strlen(input) -1] == '\n') input[strlen(input) -1] = '\0';
     else{while((c = getchar()) != '\n' && c != EOF);}
 }
+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-// ANULA O NODO ATUAL DA LISTA DOENTE
+// ANULA O NODO ATUAL DA LISTA DOENTE ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 int empty_doente(list_doente_t *list_doente){
     return list_doente -> front_doente == NULL;
 }
+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-// FAZ PRINT DE TODOS OS ELEMENTOS DA LISTA DOENTE
+// FAZ PRINT DE TODOS OS ELEMENTOS DA LISTA DOENTE --------------------------------------------------------------------------------------------------------------------------------------------------------------
 void print_list_doente(list_doente_t *list_doente){
     node_doente_t *node = list_doente -> front_doente;
     while(node != NULL){
@@ -65,8 +71,9 @@ void print_list_doente(list_doente_t *list_doente){
         node = node -> next;
     }
 }
+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-// LIMPA A LISTA DOENTE
+// LIMPA A LISTA DOENTE -----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 void clear_doente(list_doente_t *list_doente){
     node_doente_t *node;
     while(list_doente -> front_doente != NULL){
@@ -76,8 +83,9 @@ void clear_doente(list_doente_t *list_doente){
     }
     init_doente(list_doente);
 }
+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-// PERCORRE TODOS OS NODES DA LISTA DOENTE E ORDENA POR ORDEM ALFABÉTICA
+// PERCORRE TODOS OS NODES DA LISTA DOENTE E ORDENA POR ORDEM ALFABÉTICA ----------------------------------------------------------------------------------------------------------------------------------------
 void sort_doente(list_doente_t *list_doente, char *nome, node_doente_t **prev, node_doente_t **cur){
     *prev = NULL;
     *cur = list_doente -> front_doente;
@@ -92,22 +100,31 @@ void sort_doente(list_doente_t *list_doente, char *nome, node_doente_t **prev, n
         }
     }
 }
+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-// PESQUISA UM DOENTE POR ID E ORDENA POR NOME
+// PESQUISA UM DOENTE POR ID ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 void search_doente(list_doente_t *list_doente, int *id, node_doente_t **prev, node_doente_t **cur){
     *prev = NULL;
     *cur = list_doente -> front_doente;
     while(*cur != NULL){
         if((*cur) -> id == *id){
-            
+            printf("Informações do utilizador de ID %d\n", *id);
+            printf("Nome: %s\n", (*cur) -> nome);
+            printf("Contacto: %d\n", (*cur) -> tel);
+            printf("Contacto: %d\n", (*cur) -> tel);
+            printf("Data de nascimento: %d/%d/%d\n", (*cur) -> dia_nascimento, (*cur) -> mes_nascimento, (*cur) -> ano_nascimento);
+            printf("Cartão de cidadão: %s\n", (*cur) -> cc);
+            printf("Email: %s\n", (*cur) -> email);
+            break;
         }else{
             *prev = (*cur) -> next;
             *cur = (*cur) -> next -> next;
         }
     }
 }
+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
-// INSERIR ELEMENTO NO TOPO DA LISTA
+// INSERIR ELEMENTO NO TOPO DA LISTA ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 void insert_doente(list_doente_t *list_doente, int *id, int *tel, int *dia_nascimento, int *mes_nascimento, int *ano_nascimento, char nome[TAMANHO], char cc[TAMANHO], char email[TAMANHO]){
     node_doente_t *node = (node_doente_t*)malloc(sizeof(node_doente_t));
     node_doente_t *prev, *cur;
@@ -129,11 +146,12 @@ void insert_doente(list_doente_t *list_doente, int *id, int *tel, int *dia_nasci
         list_doente -> num_elems++;
     }
 }
-
+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 // eliminar o primeiro elemento: list -> front = cur -> next; #o list -> front é sempre o primeiro elemento da lista
 // eliminar um elemento no meio da lista: prev -> next = cur -> next;
 
+// REMOVER UM DOENTE DA LISTA ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 void remove_node_doente(list_doente_t *list_doente, int id){
     node_doente_t *prev, *cur;
     search_doente(list_doente, &id, &prev, &cur);
@@ -144,7 +162,9 @@ void remove_node_doente(list_doente_t *list_doente, int id){
         list_doente -> num_elems --;
     }
 }
+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
+// FUNÇÃO PRINCIPAL ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 int main(){
     char opcao[5];
     printf("-----TABELA DE AÇÕES-----\n\n");
@@ -156,5 +176,47 @@ int main(){
         printf("Apenas números são permitidos!\n");
     }while(!verifica_numeros(opcao));
     int opcao_num = (int)opcao[0] - '0';
-    printf("%d", opcao_num);
+    switch(opcao_num){
+        case 1:
+            printf("Introduza o ID do doente: ");
+            char id[5];
+            fgets(id, 5, stdin);
+            limpar_buffer(id);
+            if(verifica_numeros(id)){
+                int id_num = (int)id[0] - '0';
+                printf("Introduza o nome do doente: ");
+                char nome[TAMANHO];
+                fgets(nome, TAMANHO, stdin);
+                limpar_buffer(nome);
+                printf("Introduza o contacto do doente: ");
+                char tel[9];
+                fgets(tel, 9, stdin);
+                limpar_buffer(tel);
+                if(verifica_numeros(tel)){
+                    int tel_num = (int)tel[0] - '0';
+                    printf("Introduza a data de nascimento do doente: ");
+                    char dia_nascimento[3], mes_nascimento[3], ano_nascimento[5];
+                    fgets(dia_nascimento, 3, stdin);
+                    limpar_buffer(dia_nascimento);
+                    fgets(mes_nascimento, 3, stdin);
+                    limpar_buffer(mes_nascimento);
+                    fgets(ano_nascimento, 5, stdin);
+                    limpar_buffer(ano_nascimento);
+                    if(verifica_numeros(dia_nascimento) && verifica_numeros(mes_nascimento) && verifica_numeros(ano_nascimento)){
+                        int dia_nascimento_num = (int)dia_nascimento[0] - '0';
+                        int mes_nascimento_num = (int)mes_nascimento[0] - '0';
+                        int ano_nascimento_num = (int)ano_nascimento[0] - '0';
+                        printf("Introduza o cartão de cidadão do doente: ");
+                        char cc[TAMANHO];
+                        fgets(cc, TAMANHO, stdin);
+                        limpar_buffer(cc);
+                        printf("Introduza o email do doente: ");
+                        char email[TAMANHO];
+                        fgets(email, TAMANHO, stdin);
+                        limpar_buffer(email);
+                        insert_doente(list_doente, &id_num, &tel_num, &dia_nascimento_num, &mes_nascimento_num, &ano_nascimento_num, nome, cc, email);
+                    }else printf("Apenas números são permitidos!\n");
+                }else printf("Apenas números são permitidos!\n");
+    }
 }
+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------
